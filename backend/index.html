@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busy Bags - MoMo Test</title>
+<style>body{font-family:sans-serif;padding:20px;background:#fff8f0} .bag{border:1px solid #ddd;padding:15px;margin:10px 0;border-radius:12px} button{background:#ff9900;color:white;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;width:100%} input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc}</style>
+</head><body>
+<h2>👜 Busy Bags - Kampala</h2>
+<div id="bags">Loading bags...</div>
+<h3>Checkout - MoMo *165#</h3>
+<input id="phone" value="0776879873" placeholder="MoMo number">
+<input id="amount" value="100" placeholder="Amount">
+<button onclick="pay()">Pay with MoMo</button>
+<p id="status"></p>
+<script>
+fetch('/api/products').then(r=>r.json()).then(bags=>{
+  document.getElementById('bags').innerHTML = bags.map(b=>`<div class="bag">${b.image||'👜'} <b>${b.name}</b> - UGX ${b.price.toLocaleString()}</div>`).join('');
+});
+async function pay(){
+  const phone=document.getElementById('phone').value;
+  const amount=document.getElementById('amount').value;
+  document.getElementById('status').innerText="⏳ Sending MoMo request to "+phone+"...";
+  try{
+    const res=await fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,amount})});
+    const data=await res.json();
+    document.getElementById('status').innerText = data.success ? "✅ "+data.message+" Ref: "+data.ref : "❌ "+JSON.stringify(data.error);
+  }catch(e){ document.getElementById('status').innerText="❌ Network error: "+e; }
+}
+</script></body></html>

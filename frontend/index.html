@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busy Bags - Kampala</title>
+<style>
+body{font-family:sans-serif;background:#fff5f5;margin:0;padding:15px}
+.card{background:white;border-radius:15px;padding:15px;margin:10px 0;box-shadow:0 2px 10px #ccc}
+button{background:#e60000;color:white;border:none;padding:15px;width:100%;border-radius:10px;font-size:18px;font-weight:bold}
+input{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #ccc;box-sizing:border-box}
+h1{color:#e60000;text-align:center}
+</style>
+</head>
+<body>
+<h1>👜 Busy Bags Kampala</h1>
+<p style="text-align:center">Authentic Bags • Real MoMo to 0776879873</p>
+
+<div class="card">
+<h3>Kiddie Backpack - 40,000 UGX</h3>
+<p>Perfect for school - strong & cute</p>
+<input id="name" placeholder="Your Name">
+<input id="phone" placeholder="Your Phone 07...">
+<input id="txid" placeholder="MoMo Transaction ID after you send money">
+<button onclick="order('Kiddie Backpack','40000')">Buy - Send 40k to 0776879873</button>
+</div>
+
+<div class="card">
+<h3>Executive Tote - 85,000 UGX</h3>
+<p>For campus & office - stylish</p>
+<button onclick="order('Executive Tote','85000')">Buy - Send 85k to 0776879873</button>
+</div>
+
+<div class="card" style="background:#fff0f0;border:2px dashed #e60000">
+<b>How to pay REAL MONEY:</b><br>
+1. Dial *165*1*1# or MoMo App<br>
+2. Send money to <b>0776879873</b> (Kaka James)<br>
+3. Copy Transaction ID from SMS<br>
+4. Paste it above & click Buy
+</div>
+
+<div id="msg" style="text-align:center;font-weight:bold;padding:15px"></div>
+
+<script>
+async function order(product, price){
+ const name=document.getElementById('name').value;
+ const phone=document.getElementById('phone').value;
+ const momoTxId=document.getElementById('txid').value;
+ if(!name||!phone||!momoTxId){ document.getElementById('msg').innerText='Fill name, phone & MoMo TxID!'; return; }
+ document.getElementById('msg').innerText='Sending order...';
+ const res=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,product,price,momoTxId})});
+ const data=await res.json();
+ document.getElementById('msg').innerText=data.message;
+ if(data.success){ alert('Order received! Check Termux for 🔥'); }
+}
+</script>
+</body>
+</html>
