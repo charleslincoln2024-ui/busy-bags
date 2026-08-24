@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Busy Bags Admin</title></head>
+<body style="font-family:sans-serif;padding:15px;background:#fff">
+<h1 style="color:red;text-align:center">BUSY BAGS - ORDERS</h1>
+<div id="o">Loading orders...</div>
+<script>
+async function load(){
+ try{
+  let r=await fetch('https://busy-bags-1-backend.onrender.com/api/orders');
+  let d=await r.json();
+  if(!d.length){document.getElementById('o').innerHTML='No orders yet - share your shop!';return;}
+  document.getElementById('o').innerHTML=d.reverse().map(o=>`<div style="border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px"><b>${o.name||'Customer'}</b> - ${o.phone||''}<br>Tx: ${o.transactionId||o.momoId||''}<br>Product: ${o.product||'Bag'}<br><small>${new Date(o.createdAt||Date.now()).toLocaleString()}</small></div>`).join('');
+ }catch(e){document.getElementById('o').innerHTML='API error - backend routes check: '+e}
+}
+load();
+</script>
+</body></html>
