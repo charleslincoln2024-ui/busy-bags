@@ -1,56 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head><title>Busy Bags - Pay with MoMo</title>
-<style>
-body{font-family:Arial;padding:20px;max-width:400px;margin:auto}
-button{background:#FFCC00;color:black;padding:15px 30px;border:none;border-radius:10px;font-size:18px;font-weight:bold;width:100%;cursor:pointer}
-input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-.bag{border:1px solid #eee;padding:15px;border-radius:10px;margin-bottom:20px;text-align:center}
-</style>
+<head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Checkout - Busy Bags</title>
+<style>body{font-family:sans-serif;padding:20px;max-width:400px;margin:auto}input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc}button{width:100%;padding:15px;background:gold;border:none;border-radius:8px;font-weight:bold}</style>
 </head>
 <body>
-<div class="bag">
-  <h2>👜 Busy Bags Kampala</h2>
-  <p>Stylish Bag - UGX 180,000</p>
-  <p><small>Delivery in Kampala</small></p>
-</div>
-
-<input id="phone" placeholder="MTN Number e.g. 256771234567" value="256771234567">
-<input id="amount" value="100" type="hidden">
-<button id="payBtn" onclick="pay()">Pay with MTN MoMo</button>
-<p id="status"></p>
-
+<div style="text-align:center;border:1px solid #eee;padding:20px;border-radius:12px"><h2>👜 Busy Bags Kampala</h2><p>Stylish Bag - UGX 180,000</p></div>
+<input id="phone" placeholder="256771234567" value="256771234567">
+<input id="name" placeholder="Your Name">
+<button onclick="buy()">Pay with MoMo 0776879873 & Buy</button>
+<p id="msg"></p>
 <script>
-async function pay(){
-  const btn = document.getElementById('payBtn');
-  const status = document.getElementById('status');
-  btn.innerText = "Sending request...";
-  btn.disabled = true;
-  
-  try {
-    const res = await fetch('http://localhost:3000/api/pay', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        phone: document.getElementById('phone').value,
-        amount: "100",
-        orderId: "BUSYBAG-" + Date.now()
-      })
-    });
-    const data = await res.json();
-    if(data.success){
-      status.innerHTML = "✅ <b>Request sent!</b><br>Check MTN phone to enter PIN.<br>Ref: " + data.ref;
-      status.style.color = "green";
-      btn.innerText = "Paid! Check phone";
-    } else {
-      throw new Error(data.error);
-    }
-  } catch(e){
-    status.innerText = "❌ Error: " + e.message;
-    status.style.color = "red";
-    btn.innerText = "Try Again";
-    btn.disabled = false;
-  }
+async function buy(){
+ const m=document.getElementById('msg'); m.innerHTML='Processing... Please wait 30 sec (backend waking)';
+ try{
+  const r=await fetch('https://busy-bags-1-backend.onrender.com/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('name').value||'Customer',phone:document.getElementById('phone').value,transactionId:'TX'+Date.now(),product:'Stylish Bag',amount:180000})});
+  const d=await r.json(); m.innerHTML='<span style="color:green">✅ Order Saved! We will call you!</span><br><a href="/admin.html">View Orders</a>';
+ }catch(e){ m.innerHTML='❌ Failed to fetch - backend sleeping, wait 30 sec and Try Again'; }
 }
 </script>
 </body>
