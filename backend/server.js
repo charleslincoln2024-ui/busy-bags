@@ -7,9 +7,6 @@ let products=[
 {id:18,name:'Cozyleen Office Chair',price:350000,cat:'furniture',img:'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400'},
 {id:30,name:'Cotton Knickers 3 Pack',price:12000,cat:'fashion',img:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400'},
 {id:31,name:'Lace Black Sexy',price:13500,cat:'fashion',img:'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=400'},
-{id:32,name:'Seamless Nude 5pcs',price:15000,cat:'fashion',img:'https://images.unsplash.com/photo-1617331726728-86d53c9bf7d0?w=400'},
-{id:33,name:'High Waist White',price:16000,cat:'fashion',img:'https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=400'},
-{id:38,name:'Mens Boxer 3 Pack',price:18000,cat:'fashion',img:'https://images.unsplash.com/photo-1620799139652-715239583449?w=400'},
 {id:60,name:'White T-Shirt Classic',price:15000,cat:'fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400'},
 {id:61,name:'Black Polo Shirt',price:25000,cat:'fashion',img:'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400'},
 {id:62,name:'Summer Floral Dress',price:45000,cat:'fashion',img:'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400'},
@@ -20,18 +17,14 @@ let products=[
 {id:67,name:'Ankara African Dress',price:65000,cat:'fashion',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400'},
 {id:68,name:'Chino Pants Khaki',price:50000,cat:'fashion',img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400'},
 {id:69,name:'Blouse Pink Satin',price:38000,cat:'fashion',img:'https://images.unsplash.com/photo-1594631252845-29fc4cc560c3?w=400'},
-{id:70,name:'Denim Jacket Blue',price:60000,cat:'fashion',img:'https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400'},
-{id:71,name:'Kids T-Shirt Pack',price:30000,cat:'fashion',img:'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400'},
-{id:72,name:'Leggings Black',price:25000,cat:'fashion',img:'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400'},
-{id:73,name:'Sweatpants Grey',price:35000,cat:'fashion',img:'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=400'},
-{id:74,name:'Maxi Dress Red',price:75000,cat:'fashion',img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400'},
-{id:75,name:'Crop Top White',price:22000,cat:'fashion',img:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400'},
-{id:77,name:'Blazer Black Office',price:95000,cat:'fashion',img:'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400'},
-{id:78,name:'Cargo Pants Green',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400'},
-{id:79,name:'Pleated Skirt Brown',price:40000,cat:'fashion',img:'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa2?w=400'},
 {id:83,name:'Sneakers White',price:65000,cat:'fashion',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'},
 {id:84,name:'High Heels Red',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400'},
-{id:85,name:'Bomber Jacket Green',price:75000,cat:'fashion',img:'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400'},
-{id:86,name:'Wedding Suit Black',price:250000,cat:'fashion',img:'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400'},
 ];
-let orders=[];app.get('/api/products',(req,res)=>res.json(products));app.get('/api/orders',(req,res)=>res.json(orders));app.post('/api/orders',(req,res)=>{orders.push({...req.body,id:Date.now()});res.json({ok:true})});app.get('/',(req,res)=>res.send('BusyBags REAL'));const PORT=process.env.PORT||10000;app.listen(PORT,()=>console.log('REAL images'));
+let orders=[];
+app.get('/api/products',(req,res)=>res.json(products));
+app.post('/api/products',(req,res)=>{const p={id:Date.now(),...req.body,price:Number(req.body.price)};products.push(p);res.json(p);});
+app.delete('/api/products/:id',(req,res)=>{products=products.filter(x=>x.id!=req.params.id);res.json({ok:true})});
+app.get('/api/orders',(req,res)=>res.json(orders));
+app.post('/api/orders',(req,res)=>{orders.push({...req.body,id:Date.now()});res.json({ok:true})});
+app.get('/',(req,res)=>res.send('BusyBags ADMIN READY'));
+const PORT=process.env.PORT||10000;app.listen(PORT,()=>console.log('Admin ready'));
