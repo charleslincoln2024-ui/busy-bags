@@ -11,7 +11,6 @@ let products=[
 {id:61,name:'Black Polo Shirt',price:25000,cat:'fashion',img:'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400'},
 {id:62,name:'Summer Floral Dress',price:45000,cat:'fashion',img:'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400'},
 {id:63,name:'Denim Jeans Slim',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400'},
-{id:64,name:'Skinny Jeans Black',price:58000,cat:'fashion',img:'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?w=400'},
 {id:65,name:'Hoodie Grey Unisex',price:48000,cat:'fashion',img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400'},
 {id:66,name:'Formal Shirt White',price:35000,cat:'fashion',img:'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?w=400'},
 {id:67,name:'Ankara African Dress',price:65000,cat:'fashion',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400'},
@@ -25,6 +24,7 @@ app.get('/api/products',(req,res)=>res.json(products));
 app.post('/api/products',(req,res)=>{const p={id:Date.now(),...req.body,price:Number(req.body.price)};products.push(p);res.json(p);});
 app.delete('/api/products/:id',(req,res)=>{products=products.filter(x=>x.id!=req.params.id);res.json({ok:true})});
 app.get('/api/orders',(req,res)=>res.json(orders));
-app.post('/api/orders',(req,res)=>{orders.push({...req.body,id:Date.now()});res.json({ok:true})});
+app.post('/api/orders',(req,res)=>{const o={...req.body,id:Date.now(),date:new Date()};orders.push(o);console.log('NEW ORDER',o);res.json({ok:true})});
+app.delete('/api/orders/:id',(req,res)=>{orders=orders.filter(x=>x.id!=req.params.id);res.json({ok:true})});
 app.get('/',(req,res)=>res.send('BusyBags ADMIN READY'));
 const PORT=process.env.PORT||10000;app.listen(PORT,()=>console.log('Admin ready'));

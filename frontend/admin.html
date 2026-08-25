@@ -1,53 +1,29 @@
-<!DOCTYPE html>
-<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>BusyBags Admin</title>
-<style>body{font-family:sans-serif;margin:0;padding:10px;background:#f5f5f5} .top{background:#0f172a;color:#fff;padding:15px;border-radius:12px;display:flex;justify-content:space-between;align-items:center} .card{background:#fff;padding:15px;border-radius:12px;margin-top:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)} input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box} button{padding:12px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer} .orange{background:#ff8c00;color:#fff;width:100%} .red{background:red;color:#fff} .item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee} .item img{width:60px;height:60px;object-fit:cover;border-radius:8px;background:#eee}</style></head>
-<body>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>BusyBags Admin</title>
+<style>body{font-family:sans-serif;margin:0;padding:10px;background:#f5f5f5}.top{background:#0f172a;color:#fff;padding:15px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}.card{background:#fff;padding:15px;border-radius:12px;margin-top:12px;box-shadow:0 2px 8px rgba(0,0,0,.1)}input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}button{padding:12px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}.orange{background:#ff8c00;color:#fff;width:100%}.red{background:red;color:#fff}.item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.item img{width:60px;height:60px;object-fit:cover;border-radius:8px;background:#eee}.order{border:1px solid #ff8c00;border-radius:8px;padding:10px;margin:8px 0;background:#fff7ed}.tabs{display:flex;gap:8px;margin-top:12px}.tab{flex:1;padding:12px;background:#ddd;border-radius:8px;text-align:center;cursor:pointer}.tab.active{background:#0f172a;color:#fff}</style></head><body>
 <div class="top"><b>BUSYBAGS ADMIN</b><a href="/" style="color:#ff8c00;text-decoration:none">← Shop</a></div>
+<div class="tabs"><div class="tab active" id="t1" onclick="showTab(1)">Products</div><div class="tab" id="t2" onclick="showTab(2)">Orders (<span id="ocnt">0</span>)</div></div>
 
-<div class="card">
-<h3 style="margin:0 0 10px">+ Add New Product</h3>
+<div id="productsTab">
+<div class="card"><h3 style="margin:0 0 10px">+ Add New Product</h3>
 <input id="pname" placeholder="Product Name e.g. Cozyleen Sofa Blue">
 <input id="pprice" type="number" placeholder="Price in UGX e.g. 850000">
 <select id="pcat"><option value="fashion">fashion</option><option value="bags">bags</option><option value="furniture">furniture</option><option value="phone">phone</option></select>
-<input id="pimg" placeholder="Image Link https://images.unsplash.com/... Or leave empty">
-<button class="orange" onclick="addProduct()">ADD PRODUCT</button>
-<p style="font-size:12px;color:#666">Tip: For image, copy any Unsplash link or your own product photo link. If empty, default image will be used.</p>
+<input id="pimg" placeholder="Image Link https://... or leave empty">
+<button class="orange" onclick="addProduct()">ADD PRODUCT</button></div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 id="count" style="margin:0">Products (0)</h3><button class="orange" style="width:auto" onclick="loadProducts()">Refresh</button></div><div id="list"></div></div>
 </div>
 
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 id="count" style="margin:0">Products (0)</h3><button class="orange" style="width:auto" onclick="loadProducts()">Refresh</button></div>
-<div id="list"></div>
+<div id="ordersTab" style="display:none">
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Customer Orders</h3><button class="orange" style="width:auto" onclick="loadOrders()">Refresh Orders</button></div><div id="olist"><p>Loading orders...</p></div></div>
 </div>
 
 <script>
-const API = location.origin.includes('localhost') ? 'http://localhost:10000' : '';
-async function loadProducts(){
- const res = await fetch(`${API}/api/products`);
- const data = await res.json();
- document.getElementById('count').innerText = `Products (${data.length})`;
- document.getElementById('list').innerHTML = data.map(p=>`
-  <div class="item">
-   <img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'">
-   <div style="flex:1"><b>${p.name}</b><br><span style="color:#666">${p.price} UGX - ${p.cat}</span></div>
-   <button class="red" onclick="delProduct(${p.id})">X</button>
-  </div>
- `).join('');
-}
-async function addProduct(){
- const name=document.getElementById('pname').value;
- const price=document.getElementById('pprice').value;
- const cat=document.getElementById('pcat').value;
- let img=document.getElementById('pimg').value;
- if(!name||!price){alert('Enter name and price!');return;}
- if(!img) img='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400';
- const res=await fetch(`${API}/api/products`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,cat,img})});
- if(res.ok){alert('Added!');document.getElementById('pname').value='';document.getElementById('pprice').value='';document.getElementById('pimg').value='';loadProducts();}
-}
-async function delProduct(id){
- if(!confirm('Delete this product?')) return;
- await fetch(`${API}/api/products/${id}`,{method:'DELETE'});
- loadProducts();
-}
+const API='';
+function showTab(n){document.getElementById('productsTab').style.display=n==1?'block':'none';document.getElementById('ordersTab').style.display=n==2?'block':'none';document.getElementById('t1').className=n==1?'tab active':'tab';document.getElementById('t2').className=n==2?'tab active':'tab'; if(n==2) loadOrders();}
+async function loadProducts(){const res=await fetch(`${API}/api/products`);const data=await res.json();document.getElementById('count').innerText=`Products (${data.length})`;document.getElementById('list').innerHTML=data.map(p=>`<div class="item"><img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'"><div style="flex:1"><b>${p.name}</b><br><span style="color:#666">${p.price} UGX - ${p.cat}</span></div><button class="red" onclick="delProduct(${p.id})">X</button></div>`).join('');}
+async function addProduct(){const name=document.getElementById('pname').value;const price=document.getElementById('pprice').value;const cat=document.getElementById('pcat').value;let img=document.getElementById('pimg').value;if(!name||!price){alert('Enter name and price!');return;}if(!img) img='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400';const res=await fetch(`${API}/api/products`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,price,cat,img})});if(res.ok){alert('Added!');document.getElementById('pname').value='';document.getElementById('pprice').value='';document.getElementById('pimg').value='';loadProducts();}}
+async function delProduct(id){if(!confirm('Delete?'))return;await fetch(`${API}/api/products/${id}`,{method:'DELETE'});loadProducts();}
+async function loadOrders(){const res=await fetch(`${API}/api/orders`);const data=await res.json();document.getElementById('ocnt').innerText=data.length;if(data.length==0){document.getElementById('olist').innerHTML='<p>No orders yet. When customers order, you will see here.</p>';return;}document.getElementById('olist').innerHTML=data.reverse().map(o=>`<div class="order"><b>Order #${o.id}</b> - ${new Date(o.id).toLocaleString()}<br><b>Customer:</b> ${o.name||o.customerName||'No name'}<br><b>Phone:</b> ${o.phone||o.customerPhone||'No phone'}<br><b>Address:</b> ${o.address||o.location||'No address'}<br><b>Items:</b> ${o.items ? o.items.map(i=>i.name+' x'+(i.qty||1)).join(', ') : o.product||JSON.stringify(o)}<br><b>Total:</b> ${o.total||o.price||''} UGX<br><button class="red" style="margin-top:6px" onclick="delOrder(${o.id})">Delete Order</button></div>`).join('');}
+async function delOrder(id){if(!confirm('Delete order?'))return;await fetch(`${API}/api/orders/${id}`,{method:'DELETE'});loadOrders();}
 loadProducts();
-</script>
-</body></html>
+</script></body></html>
