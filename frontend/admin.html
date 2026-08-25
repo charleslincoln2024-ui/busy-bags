@@ -1,17 +1,27 @@
-<!DOCTYPE html>
-<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Busy Bags Admin</title></head>
-<body style="font-family:sans-serif;padding:15px;background:#fff">
-<h1 style="color:red;text-align:center">BUSY BAGS - ORDERS</h1>
-<div id="o">Loading orders...</div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seller Admin - BusyBags</title>
+<style>body{font-family:Arial;padding:12px;background:#f5f5f5}input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:6px}button{background:#ff9900;border:none;padding:10px 16px;border-radius:6px;font-weight:bold;margin:4px}.card{background:#fff;padding:12px;border-radius:8px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.1)} .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}</style></head>
+<body>
+<h2>🏪 BusyBags SELLER PANEL</h2>
+<div class="card"><h3>Add New Product</h3>
+<input id="name" placeholder="Product name e.g. Sugar 1kg">
+<input id="price" type="number" placeholder="Price UGX e.g. 5000">
+<select id="cat"><option value="grocery">Grocery</option><option value="fashion">Fashion</option><option value="phone">Phones</option><option value="shoes">Shoes</option><option value="bags">Bags</option><option value="home">Home</option></select>
+<input id="img" placeholder="Image link (paste from Google) or leave blank">
+<button onclick="addProd()">+ Add Product</button>
+<p style="font-size:12px;color:#666">Tip: Go to Google Images, long press image > Copy image link > Paste here</p>
+</div>
+<div class="card"><h3>Your Products (<span id="pcount">0</span>) <button onclick="loadProds()">Refresh</button></h3><div id="plist"></div></div>
+<div class="card"><h3>📦 Orders (<span id="ocount">0</span>) <button onclick="loadOrders()">Refresh Orders</button></h3><div id="olist"></div></div>
 <script>
-async function load(){
- try{
-  let r=await fetch('https://busy-bags-1-backend.onrender.com/api/orders');
-  let d=await r.json();
-  if(!d.length){document.getElementById('o').innerHTML='No orders yet - share your shop!';return;}
-  document.getElementById('o').innerHTML=d.reverse().map(o=>`<div style="border:1px solid #ddd;padding:12px;margin:10px 0;border-radius:8px"><b>${o.name||'Customer'}</b> - ${o.phone||''}<br>Tx: ${o.transactionId||o.momoId||''}<br>Product: ${o.product||'Bag'}<br><small>${new Date(o.createdAt||Date.now()).toLocaleString()}</small></div>`).join('');
- }catch(e){document.getElementById('o').innerHTML='API error - backend routes check: '+e}
+const API='https://busy-bags-1-backend.onrender.com/api';
+async function addProd(){
+ let p={name:document.getElementById('name').value,price:parseInt(document.getElementById('price').value),cat:document.getElementById('cat').value,img:document.getElementById('img').value||'https://via.placeholder.com/300?text='+document.getElementById('name').value};
+ if(!p.name||!p.price)return alert('Name & Price needed');
+ await fetch(API+'/products',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+ alert('✅ Product Added! Now visible on shop');document.getElementById('name').value='';loadProds();
 }
-load();
-</script>
-</body></html>
+async function loadProds(){let r=await fetch(API+'/products');let data=await r.json();document.getElementById('pcount').innerText=data.length;document.getElementById('plist').innerHTML=data.map(p=>`<div style="display:flex;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:6px 0"><img src="${p.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px"><div style="flex:1"><b>${p.name}</b><br>${p.price} UGX - ${p.cat}</div><button onclick="del(${p.id})" style="background:red;color:#fff">X</button></div>`).join('')}
+async function del(id){if(confirm('Delete?')){await fetch(API+'/products/'+id,{method:'DELETE'});loadProds()}}
+async function loadOrders(){let r=await fetch(API+'/orders');let data=await r.json();document.getElementById('ocount').innerText=data.length;document.getElementById('olist').innerHTML=data.reverse().map(o=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><b>${o.name}</b> ${o.phone}<br>${o.product} - ${o.amount} UGX<br><small>${o.transactionId} - ${new Date(o.createdAt).toLocaleString()}</small></div>`).join('')||'No orders yet'}
+loadProds();loadOrders();
+</script></body></html>
