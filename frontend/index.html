@@ -1,69 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Busy Bags — Online Marketplace</title>
+<title>BusyBags - Uganda's Online Mall</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}
-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:#fff;border-bottom:1px solid #eee}
-.logo{font-weight:900;font-size:28px}.logo span{color:#ff8c00}
-.cart{position:relative}.cart-badge{position:absolute;top:-8px;right:-10px;background:orange;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold}
-.search{margin:12px 16px;display:flex;border:1px solid #ddd;border-radius:10px;overflow:hidden}
-.search input{flex:1;padding:12px;border:none;outline:none}
-.search button{background:#ff8c00;border:none;padding:0 18px;font-size:18px}
-.hero{margin:12px 16px;background:#1e293b;color:#fff;border-radius:16px;padding:24px}
-.hero h1{font-size:32px;line-height:1.1}.hero h1 span{color:#fbbf24}
-.hero p{margin:16px 0;opacity:.9;line-height:1.5}
-.hero a{display:inline-block;background:#ff8c00;color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:bold;margin-top:8px}
-.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px}
-.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.card h3{font-size:15px;margin-bottom:4px}.card p{font-size:12px;color:#666}
-.products{margin:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.prod{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);padding:10px}
-.prod img{width:100%;height:120px;object-fit:cover;border-radius:8px;background:#f3f3f3}
-.prod h4{font-size:13px;margin:8px 0 4px}.prod .price{color:#ff8c00;font-weight:bold}
-.prod button{width:100%;margin-top:8px;background:#111;color:#fff;border:none;padding:8px;border-radius:8px;font-weight:bold}
-#msg{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:20px;display:none;z-index:99}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto,Arial}
+body{background:#f5f5f5}
+.top{background:#ff9900;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;font-size:26px}.logo b{color:#fff}.logo span{color:#000}
+.icons{display:flex;gap:14px;font-size:20px}
+.search-bar{background:#fff;padding:8px 12px;display:flex;gap:8px}
+.search-bar input{flex:1;padding:10px;border:1px solid #ddd;border-radius:6px;outline:none}
+.search-bar button{background:#ff9900;border:none;padding:10px 16px;border-radius:6px}
+.categories{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;white-space:nowrap}
+.cat{border:1px solid #eee;padding:6px 14px;border-radius:20px;font-size:13px;background:#fff}
+.cat.active{background:#000;color:#fff}
+.hero{margin:10px;border-radius:10px;background:linear-gradient(90deg,#0f172a,#334155);color:#fff;padding:20px}
+.hero h1{font-size:28px}.hero h1 y{color:#fbbf24}
+.hero p{font-size:13px;margin:10px 0;opacity:.9}
+.hero a{background:#ff9900;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;display:inline-block;font-weight:bold;margin-top:8px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+.info div{background:#fff;padding:10px;border-radius:8px;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+.p{background:#fff;border-radius:8px;padding:8px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.p img{width:100%;height:110px;object-fit:cover;border-radius:6px}
+.p h4{font-size:12px;margin:6px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p .pr{color:#ff6600;font-weight:bold;font-size:13px}
+.p .old{font-size:11px;color:#888;text-decoration:line-through}
+.p button{width:100%;background:#ff9900;border:none;padding:6px;border-radius:4px;font-weight:bold;margin-top:6px}
+#cartCount{background:red;color:#fff;border-radius:50%;font-size:10px;padding:2px 5px;position:relative;top:-10px;left:-5px}
 </style>
 </head>
-<body style="background:#f5f7fb">
-<header><div class="logo">BUSY<span>BAGS</span></div><div class="cart">🛒 Cart <span class="cart-badge" id="cartCount">0</span></div></header>
-<div style="padding:0 16px">👤 Account</div>
-<div class="search"><input id="search" placeholder="Search products..."><button>🔍</button></div>
-<div class="hero"><h1>One busy bag<br><span>away.</span></h1><p>Discover amazing products from trusted sellers. Shop fashion, electronics, home products, beauty products and more.</p><a href="#shop">SHOP NOW →</a></div>
-<div class="features">
-<div class="card">🚚 <b>Fast Delivery</b><p>Delivery across Uganda</p></div>
-<div class="card">🔒 <b>Secure Shopping</b><p>Your information is protected</p></div>
-<div class="card">💳 <b>Easy Payment</b><p>Cash & Mobile Money</p></div>
-<div class="card">⭐ <b>Trusted Sellers</b><p>Shop with confidence</p></div>
+<body>
+<div class="top"><div class="logo"><b>BUSY</b><span>BAGS</span></div><div class="icons">👤<span>🛒<b id="cartCount">0</b></span></div></div>
+<div class="search-bar"><input id="s" placeholder="Search groceries, phones, fashion..."><button>🔍</button></div>
+<div class="categories">
+<span class="cat active" onclick="filter('all')">All</span>
+<span class="cat" onclick="filter('fashion')">Fashion</span>
+<span class="cat" onclick="filter('grocery')">Groceries</span>
+<span class="cat" onclick="filter('phone')">Phones</span>
+<span class="cat" onclick="filter('shoes')">Shoes</span>
+<span class="cat" onclick="filter('home')">Home</span>
+<span class="cat" onclick="filter('bags')">Bags</span>
 </div>
-<div id="shop" class="products">
-<div class="prod"><img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300"><h4>Kiddie Backpack</h4><div class="price">40,000 UGX</div><button onclick="buy('Kiddie Backpack',40000)">Buy Now</button></div>
-<div class="prod"><img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=300"><h4>Executive Tote</h4><div class="price">85,000 UGX</div><button onclick="buy('Executive Tote',85000)">Buy Now</button></div>
-<div class="prod"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300"><h4>Stylish Handbag</h4><div class="price">180,000 UGX</div><button onclick="buy('Stylish Bag',180000)">Buy Now</button></div>
-<div class="prod"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300"><h4>School Bag</h4><div class="price">55,000 UGX</div><button onclick="buy('School Bag',55000)">Buy Now</button></div>
+<div class="hero"><h1>One busy bag <y>away.</y></h1><p>Shop everything - groceries, fashion, electronics, home & more. Fast delivery across Uganda.</p><a href="#products">SHOP NOW →</a></div>
+<div class="info">
+<div>🚚 <b>Fast Delivery</b><br>Across Uganda</div>
+<div>🔒 <b>Secure</b><br>100% safe payment</div>
+<div>💳 <b>MoMo & Cash</b><br>Easy payment</div>
+<div>⭐ <b>Trusted</b><br>Like Jumia</div>
 </div>
-<div id="msg"></div>
+<div id="products" class="prod-grid">
+<div class="p" data-cat="bags"><img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300"><h4>Kiddie School Backpack</h4><div class="pr">40,000 UGX</div><div class="old">55,000</div><button onclick="buy('Kiddie Backpack',40000)">ADD TO CART</button></div>
+<div class="p" data-cat="bags"><img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=300"><h4>Executive Office Tote</h4><div class="pr">85,000 UGX</div><button onclick="buy('Executive Tote',85000)">ADD TO CART</button></div>
+<div class="p" data-cat="fashion"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300"><h4>Men T-Shirt Cotton</h4><div class="pr">35,000 UGX</div><button onclick="buy('Men T-Shirt',35000)">ADD TO CART</button></div>
+<div class="p" data-cat="grocery"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=300"><h4>Rice 5kg Super</h4><div class="pr">25,000 UGX</div><button onclick="buy('Rice 5kg',25000)">ADD TO CART</button></div>
+<div class="p" data-cat="phone"><img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=300"><h4>Infinix Smart Phone</h4><div class="pr">450,000 UGX</div><div class="old">500,000</div><button onclick="buy('Infinix Phone',450000)">ADD TO CART</button></div>
+<div class="p" data-cat="shoes"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"><h4>Nike Running Shoes</h4><div class="pr">120,000 UGX</div><button onclick="buy('Nike Shoes',120000)">ADD TO CART</button></div>
+<div class="p" data-cat="home"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300"><h4>Home Curtains 2pcs</h4><div class="pr">80,000 UGX</div><button onclick="buy('Curtains',80000)">ADD TO CART</button></div>
+<div class="p" data-cat="grocery"><img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=300"><h4>Cooking Oil 3L</h4><div class="pr">18,000 UGX</div><button onclick="buy('Cooking Oil',18000)">ADD TO CART</button></div>
+</div>
+<div id="msg" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:10px 18px;border-radius:20px;display:none"></div>
 <script>
-let cart=0;
-function showMsg(t){let m=document.getElementById('msg');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',3000)}
-async function buy(product,amount){
- let phone=prompt('Enter MoMo number 256... to pay '+amount+' UGX to 0776879873:','25677');
- if(!phone)return;
- let name=prompt('Your Name:','Customer');
- if(!name)name='Customer';
- cart++;document.getElementById('cartCount').innerText=cart;
- showMsg('Processing '+product+'...');
- try{
-  let r=await fetch('https://busy-bags-1-backend.onrender.com/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,transactionId:'TX'+Date.now(),product,amount})});
-  await r.json();
-  showMsg('✅ Order Saved! We will call you');
- }catch(e){showMsg('Retrying... backend waking'); setTimeout(()=>buy(product,amount),4000)}
+let c=0;
+function msg(t){let m=document.getElementById('msg');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',3000)}
+function filter(cat){document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('.p').forEach(p=>{p.style.display=(cat=='all'||p.dataset.cat==cat)?'':'none'})}
+document.getElementById('s').addEventListener('input',e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('.p').forEach(p=>{p.style.display=p.innerText.toLowerCase().includes(q)?'':'none'})})
+async function buy(prod,amt){
+ let phone=prompt('MoMo number for '+prod+' ('+amt+' UGX to 0776879873):','25677');if(!phone)return;
+ let name=prompt('Your name:','Customer')||'Customer';
+ c++;document.getElementById('cartCount').innerText=c;
+ msg('Ordering '+prod+'...');
+ try{await fetch('https://busy-bags-1-backend.onrender.com/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,transactionId:'TX'+Date.now(),product:prod,amount:amt})});msg('✅ Order saved! We call you');}catch(e){msg('Backend waking, retrying...');setTimeout(()=>buy(prod,amt),3500)}
 }
-document.getElementById('search').addEventListener('input',e=>{
- let q=e.target.value.toLowerCase();
- document.querySelectorAll('.prod').forEach(p=>{p.style.display=p.innerText.toLowerCase().includes(q)?'':'none'})
-});
 </script>
 </body>
 </html>
