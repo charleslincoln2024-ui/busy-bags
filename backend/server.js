@@ -1,5 +1,4 @@
-const express=require('express');const cors=require('cors');
-const app=express();app.use(cors());app.use(express.json());
+const express=require('express');const cors=require('cors');const app=express();app.use(cors());app.use(express.json());
 let products=[
 {id:1,name:'Kiddie Space Backpack',price:45000,cat:'bags',img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'},
 {id:2,name:'Executive Tote Bag Leather',price:85000,cat:'bags',img:'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400'},
@@ -7,11 +6,44 @@ let products=[
 {id:16,name:'Cozyleen 3-Seater Sofa Grey',price:850000,cat:'furniture',img:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400'},
 {id:17,name:'Cozyleen Dining Table 4 Chairs',price:1200000,cat:'furniture',img:'https://images.unsplash.com/photo-1615066028049-d1a3c00d11c3?w=400'},
 {id:18,name:'Cozyleen Office Chair',price:350000,cat:'furniture',img:'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400'},
+{id:30,name:'Cotton Knickers 3 Pack',price:12000,cat:'fashion',img:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400'},
+{id:31,name:'Lace Sexy Black Knickers',price:13500,cat:'fashion',img:'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=400'},
+{id:32,name:'Seamless Nude 5pcs',price:15000,cat:'fashion',img:'https://images.unsplash.com/photo-1617331726728-86d53c9bf7d0?w=400'},
+{id:33,name:'High Waist White Cotton',price:16000,cat:'fashion',img:'https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=400'},
+{id:34,name:'Bikini Blue Comfort',price:14000,cat:'fashion',img:'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400'},
+{id:35,name:'Boyshort Sport Grey',price:14500,cat:'fashion',img:'https://images.unsplash.com/photo-1573104333605-2c1a1fe4c3c0?w=400'},
+{id:36,name:'Lace Thong Red Sexy',price:13000,cat:'fashion',img:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400'},
+{id:37,name:'Hipster Pack 3 Colors',price:15500,cat:'fashion',img:'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400'},
+{id:38,name:'Mens Boxer 3 Pack',price:18000,cat:'fashion',img:'https://images.unsplash.com/photo-1620799139652-715239583449?w=400'},
+{id:39,name:'Mens Cotton Boxers 5pcs',price:20000,cat:'fashion',img:'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400'},
+{id:60,name:'Classic White T-Shirt',price:15000,cat:'fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400'},
+{id:61,name:'Black Polo Shirt',price:25000,cat:'fashion',img:'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400'},
+{id:62,name:'Summer Dress Floral',price:45000,cat:'fashion',img:'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400'},
+{id:63,name:'Denim Jeans Slim Fit',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400'},
+{id:64,name:'Skinny Jeans Black',price:58000,cat:'fashion',img:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400'},
+{id:65,name:'Hoodie Grey Unisex',price:48000,cat:'fashion',img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400'},
+{id:66,name:'Formal Shirt White',price:35000,cat:'fashion',img:'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400'},
+{id:67,name:'Ankara Print Dress African',price:65000,cat:'fashion',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400'},
+{id:68,name:'Chino Pants Khaki',price:50000,cat:'fashion',img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400'},
+{id:69,name:'Blouse Satin Pink Women',price:38000,cat:'fashion',img:'https://images.unsplash.com/photo-1594631252845-29fc4cc560c3?w=400'},
+{id:70,name:'Denim Jacket Blue',price:60000,cat:'fashion',img:'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400'},
+{id:71,name:'Kids T-Shirt Pack 3',price:30000,cat:'fashion',img:'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400'},
+{id:72,name:'Leggings Black Women',price:25000,cat:'fashion',img:'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400'},
+{id:73,name:'Sweatpants Grey Jogger',price:35000,cat:'fashion',img:'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=400'},
+{id:74,name:'Maxi Dress Red Evening',price:75000,cat:'fashion',img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400'},
+{id:75,name:'Crop Top White',price:22000,cat:'fashion',img:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400'},
+{id:76,name:'Baby Onesie 3 Pack',price:28000,cat:'fashion',img:'https://images.unsplash.com/photo-1522771930-78848d9293e4?w=400'},
+{id:77,name:'Blazer Black Office',price:95000,cat:'fashion',img:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400'},
+{id:78,name:'Cargo Pants Green',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400'},
+{id:79,name:'Pleated Skirt Brown',price:40000,cat:'fashion',img:'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa2?w=400'},
+{id:80,name:'Kitenge Dress African Print',price:70000,cat:'fashion',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400'},
+{id:81,name:'Sports Bra Pink',price:20000,cat:'fashion',img:'https://images.unsplash.com/photo-1571513800374-df1bbe650e56?w=400'},
+{id:82,name:'Leather Skirt Black',price:45000,cat:'fashion',img:'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa2?w=400'},
+{id:83,name:'Sneakers White Sport',price:65000,cat:'fashion',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'},
+{id:84,name:'High Heels Red Shoes',price:55000,cat:'fashion',img:'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400'},
+{id:85,name:'Bomber Jacket Green',price:75000,cat:'fashion',img:'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400'},
+{id:86,name:'Wedding Suit Black Men',price:250000,cat:'fashion',img:'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400'},
 ];
-let knickers=['Cotton Knickers 3 Pack','Lace Sexy Black','Seamless Nude 5pcs','High Waist White','Bikini Blue','Boyshort Grey','Lace Thong Red','Hipster Pack','Mens Boxer 3 Pack','Mens Cotton','Silk Satin Champagne','Period Panty Black','Bamboo Eco','Plus Size XL','Teen Cotton 5 Pack','Bridal White Lace','Sport Black','Maternity Soft','Mens Trunk Premium','Kids Girls 6 Pack'];
-knickers.forEach((n,i)=>{products.push({id:30+i,name:n,price:12000+(i*1000),cat:'fashion',img:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400'});});
-let clothes=['White T-Shirt','Black Polo','Summer Dress Floral','Denim Jeans Slim','Skinny Black','Hoodie Grey','Formal Shirt','Ankara Dress','Chino Khaki','Blouse Pink','Denim Jacket','Kids Pack','Leggings Black','Sweatpants','Maxi Red','Crop Top','Linen Shirt','Baby Onesie','Blazer Black','Cargo Green','Pleated Skirt','Hoodie Black','Jumpsuit Denim','Vest White','Kitenge African','Yoga Pants','Trouser Black','Cardigan Cream','Couple Tees','Leather Belt','High Heels','Sneakers White','Baby Dress','Turtleneck','Bomber Jacket','Shorts Denim','Briefs 5 Pack','Evening Gown','Jeans Boys','Kaftan White','Palazzo Pants','Tank Top','Kimono Floral','School Uniform','Wedding Suit','Sports Bra','Shorts Khaki','Hoodie Red','Leather Skirt','Flannel Checkered','Baby Sweater','Crop Hoodie Pink','Jeans Stonewashed','Party Gold','Office Striped','Mom Jeans','Dress Unicorn','Dry Fit Tee','Silk Scarf','Cap Black'];
-clothes.forEach((n,i)=>{products.push({id:60+i,name:n,price:15000+(i*2000),cat:'fashion',img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400'});});
 let orders=[];app.get('/api/products',(req,res)=>res.json(products));app.get('/api/orders',(req,res)=>res.json(orders));
 app.post('/api/orders',(req,res)=>{orders.push({...req.body,id:Date.now()});res.json({ok:true})});
-app.get('/',(req,res)=>res.send('BusyBags 105'));const PORT=process.env.PORT||10000;app.listen(PORT,()=>console.log('Running 105'));
+app.get('/',(req,res)=>res.send('BusyBags REAL images'));const PORT=process.env.PORT||10000;app.listen(PORT,()=>console.log('Real images OK'));
