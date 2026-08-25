@@ -1,27 +1,15 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seller Admin - BusyBags</title>
-<style>body{font-family:Arial;padding:12px;background:#f5f5f5}input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:6px}button{background:#ff9900;border:none;padding:10px 16px;border-radius:6px;font-weight:bold;margin:4px}.card{background:#fff;padding:12px;border-radius:8px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.1)} .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}</style></head>
-<body>
-<h2>🏪 BusyBags SELLER PANEL</h2>
-<div class="card"><h3>Add New Product</h3>
-<input id="name" placeholder="Product name e.g. Sugar 1kg">
-<input id="price" type="number" placeholder="Price UGX e.g. 5000">
-<select id="cat"><option value="grocery">Grocery</option><option value="fashion">Fashion</option><option value="phone">Phones</option><option value="shoes">Shoes</option><option value="bags">Bags</option><option value="home">Home</option></select>
-<input id="img" placeholder="Image link (paste from Google) or leave blank">
-<button onclick="addProd()">+ Add Product</button>
-<p style="font-size:12px;color:#666">Tip: Go to Google Images, long press image > Copy image link > Paste here</p>
-</div>
-<div class="card"><h3>Your Products (<span id="pcount">0</span>) <button onclick="loadProds()">Refresh</button></h3><div id="plist"></div></div>
-<div class="card"><h3>📦 Orders (<span id="ocount">0</span>) <button onclick="loadOrders()">Refresh Orders</button></h3><div id="olist"></div></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BusyBags Admin</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f5f5f5;padding:12px}.top{background:#0f172a;color:#fff;padding:14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}.card{background:#fff;border-radius:12px;padding:12px;margin-top:12px;box-shadow:0 2px 6px rgba(0,0,0,.06)}.p{display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee}.p img{width:50px;height:50px;border-radius:8px;object-fit:cover}.x{background:red;color:#fff;border:none;width:36px;height:36px;border-radius:8px;font-weight:800;cursor:pointer}.btn{background:#ff8c00;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:800;cursor:pointer}</style></head><body>
+<div class="top"><b>BUSYBAGS ADMIN</b><a href="/" style="color:#ff8c00;text-decoration:none">← Shop</a></div>
+
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Products (<span id="pc">0</span>)</h3><button class="btn" onclick="loadProducts()">Refresh</button></div><div id="plist"></div></div>
+
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>📦 Orders (<span id="oc">0</span>)</h3><button class="btn" onclick="loadOrders()">Refresh Orders</button></div><div id="olist" style="margin-top:10px"></div></div>
+
 <script>
 const API='https://busy-bags-1-backend.onrender.com/api';
-async function addProd(){
- let p={name:document.getElementById('name').value,price:parseInt(document.getElementById('price').value),cat:document.getElementById('cat').value,img:document.getElementById('img').value||'https://via.placeholder.com/300?text='+document.getElementById('name').value};
- if(!p.name||!p.price)return alert('Name & Price needed');
- await fetch(API+'/products',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
- alert('✅ Product Added! Now visible on shop');document.getElementById('name').value='';loadProds();
-}
-async function loadProds(){let r=await fetch(API+'/products');let data=await r.json();document.getElementById('pcount').innerText=data.length;document.getElementById('plist').innerHTML=data.map(p=>`<div style="display:flex;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:6px 0"><img src="${p.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px"><div style="flex:1"><b>${p.name}</b><br>${p.price} UGX - ${p.cat}</div><button onclick="del(${p.id})" style="background:red;color:#fff">X</button></div>`).join('')}
-async function del(id){if(confirm('Delete?')){await fetch(API+'/products/'+id,{method:'DELETE'});loadProds()}}
-async function loadOrders(){let r=await fetch(API+'/orders');let data=await r.json();document.getElementById('ocount').innerText=data.length;document.getElementById('olist').innerHTML=data.reverse().map(o=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><b>${o.name}</b> ${o.phone}<br>${o.product} - ${o.amount} UGX<br><small>${o.transactionId} - ${new Date(o.createdAt).toLocaleString()}</small></div>`).join('')||'No orders yet'}
-loadProds();loadOrders();
+async function loadProducts(){let r=await fetch(API+'/products');let d=await r.json();document.getElementById('pc').innerText=d.length;document.getElementById('plist').innerHTML=d.map(p=>`<div class="p"><img src="${p.img}"><div style="flex:1"><b>${p.name}</b><br><small>${p.price} UGX - ${p.cat}</small></div><button class="x" onclick="del(${p.id})">X</button></div>`).join('')}
+async function loadOrders(){let r=await fetch(API+'/orders');let d=await r.json();document.getElementById('oc').innerText=d.length;document.getElementById('olist').innerHTML=d.map(o=>`<div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-top:8px"><b>${o.name||'Customer'}</b> ${o.phone||''}<br>${o.product||o.products||''} - ${o.amount||''} UGX<br><small style="color:gray">${o.date?new Date(o.date).toLocaleString():'Just now'}</small><br><a href="https://wa.me/${(o.phone||'').replace(/[^0-9]/g,'')}?text=Hello ${o.name}, your BusyBags order ${o.product} is confirmed!" style="background:#25D366;color:#fff;padding:6px 12px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:6px;font-size:12px">WhatsApp Customer</a></div>`).reverse().join('')||'No orders yet'}
+async function del(id){if(!confirm('Delete?'))return;await fetch(API+'/products/'+id,{method:'DELETE'}).catch(()=>alert('Delete not enabled in backend, remove manually'));loadProducts()}
+loadProducts();loadOrders();
 </script></body></html>
